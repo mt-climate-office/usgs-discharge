@@ -1,2 +1,5 @@
 ^usgs\.discharge\.Rproj$
 ^\.Rproj\.user$
+^README\.Rmd$
+^data-raw$
+^LICENSE\.md$

@@ -35,7 +35,7 @@ pal <- leaflet::colorBin(
 #' `furrr` uses a sequential plan to get discharge, but you can specify a multisession
 #' plan by running `future::plan(future::multisession, workers = 5)` before running the code.
 #'
-#' @param stations The `sf` object returned by [get_discharge_shp()].
+#' @param discharge The `sf` object returned by [get_discharge_shp()].
 #'
 #' @return The same `sf` as was input, but with a `time` column corresponding to
 #' the time period of aggregation, a `value` column corresponding to the percentile
@@ -50,7 +50,7 @@ pal <- leaflet::colorBin(
 #' percentiles = calc_discharge_anomalies(discharge)
 #' }
 calc_discharge_anomalies <- function(discharge) {
-  stations |>
+  discharge |>
     dplyr::mutate(
       today = furrr::future_map_dbl(data, calc_range_ntile, n_days=1),
       `7` = furrr::future_map_dbl(data, calc_range_ntile, n_days=7),

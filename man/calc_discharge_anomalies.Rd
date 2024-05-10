@@ -10,7 +10,7 @@ plan by running \code{future::plan(future::multisession, workers = 5)} before ru
 calc_discharge_anomalies(discharge)
 }
 \arguments{
-\item{stations}{The \code{sf} object returned by \code{\link[=get_discharge_shp]{get_discharge_shp()}}.}
+\item{discharge}{The \code{sf} object returned by \code{\link[=get_discharge_shp]{get_discharge_shp()}}.}
 }
 \value{
 The same \code{sf} as was input, but with a \code{time} column corresponding to

@@ -1,6 +1,6 @@
 make_quantile_df <- function(vals, probs) {
 
-  quantile(vals, probs=probs, na.rm = TRUE) |>
+  stats::quantile(vals, probs=probs, na.rm = TRUE) |>
     as.list() |>
     tibble::as_tibble() |>
     tidyr::pivot_longer(dplyr::everything()) |>
@@ -119,7 +119,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
         glue::glue("{STAID}_discharge.png")
       )
 
-      ggsave(out_name, plt, bg="white", width = 8, height=5)
+      ggplot2::ggsave(out_name, plt, bg="white", width = 8, height=5)
       return(out_name)
     }
   }

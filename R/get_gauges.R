@@ -16,16 +16,16 @@ get_gauges <- function(clip_shp=NULL) {
 
   tmp <- tempfile()
 
-  download.file(url, tmp)
+  utils::download.file(url, tmp)
 
-  untar(tmp, exdir = tempdir())
+  utils::untar(tmp, exdir = tempdir())
 
   shp <- list.files(tempdir(), full.names = TRUE, pattern = ".shp") |>
     sf::read_sf() |>
     dplyr::select("STAID", "STANAME")
 
   if (!is.null(clip_shp)) {
-    clip_shp <- clip
+    clip_shp <- sf::st_transform(clip_shp, sf::st_crs(shp))
     shp <- sf::st_crop(shp, clip_shp)
   }
 

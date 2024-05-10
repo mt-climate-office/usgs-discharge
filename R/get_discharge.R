@@ -49,7 +49,7 @@ get_discharge <- function(STAID) {
 get_discharge_shp <- function(stations) {
 
   stations |>
-    dplyr::mutate(data = furrr::future_pmap(list(STAID), get_discharge)) |>
+    dplyr::mutate(data = furrr::future_pmap(list(STAID), get_discharge), seed=NULL) |>
     dplyr::filter(!is.na(data)) |>
     dplyr::filter(purrr::map_lgl(data, ~ nrow(.x) > 11000))
 }
