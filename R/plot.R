@@ -107,7 +107,8 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
     ggplot2::theme_bw(base_size = 14) +
     ggplot2::labs(x='', y='Discharge [cfs]',
          fill=glue::glue("Past\nConditions\n{this_year-30}-{this_year}"),
-         title=glue::glue("USGS Gauge {STAID} (", max(out$date), ")\n{STANAME}")) +
+         title=glue::glue("USGS Gauge {STAID} (", max(out$date) %>%
+                            as.Date(), ")\n{STANAME}")) +
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", hjust = 0.5)) +
     ggplot2::scale_y_log10()
 
