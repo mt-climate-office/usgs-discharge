@@ -11,17 +11,17 @@ make_quantile_df <- function(vals, probs) {
       name = glue::glue("{name_lag}-{name}"),
       name = dplyr::case_match(
         name,
-        "0%-2%" ~ "D4",
-        "2%-5%" ~ "D3",
-        "5%-10%" ~ "D2",
-        "10%-20%" ~ "D1",
-        "20%-30%" ~ "D0",
-        "30%-70%" ~ "Normal",
-        "70%-80%" ~ "W0",
-        "80%-90%" ~ "W1",
-        "90%-95%" ~ "W2",
-        "95%-98%" ~ "W3",
-        "98%-100%" ~ "W4"
+        "0%-2%" ~ "0-2 (D4)",
+        "2%-5%" ~ "2-5 (D3)",
+        "5%-10%" ~ "5-10 (D2)",
+        "10%-20%" ~ "10-20 (D1)",
+        "20%-30%" ~ "20-30 (D0)",
+        "30%-70%" ~ "30-70 (Normal)",
+        "70%-80%" ~ "70-80 (W0)",
+        "80%-90%" ~ "80-90 (W1)",
+        "90%-95%" ~ "90-95 (W2)",
+        "95%-98%" ~ "95-98 (W3)",
+        "98%-100%" ~ "98-100 (W4)"
       ),
       ymin = val_lag,
       ymax = value
@@ -49,17 +49,17 @@ make_quantile_df <- function(vals, probs) {
 make_climatology_plot <- function(data, STANAME, STAID, ...) {
   USDM_colors <-
     c(
-      `D4` = "#730000",
-      `D3` = "#E60000",
-      `D2` = "#FFAA00",
-      `D1` = "#FCD37F",
-      `D0` = "#FFFF00",
-      Normal = "white",
-      `W0` = "#9DFF44",
-      `W1` = "#22FFFF",
-      `W2` = "#1197FE",
-      `W3` = "#1100FF",
-      `W4` = "#0A0099"
+      `0-2 (D4)` = "#730000",
+      `2-5 (D3)` = "#E60000",
+      `5-10 (D2)` = "#FFAA00",
+      `10-20 (D1)` = "#FCD37F",
+      `20-30 (D0)` = "#FFFF00",
+      `30-70 (Normal)` = "white",
+      `70-80 (W0)` = "#9DFF44",
+      `80-90 (W1)` = "#22FFFF",
+      `90-95 (W2)` = "#1197FE",
+      `95-98 (W3)` = "#1100FF",
+      `98-100 (W4)` = "#0A0099"
     )
 
   data = tibble::tibble(data)
@@ -106,7 +106,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
     ) +
     ggplot2::theme_bw(base_size = 14) +
     ggplot2::labs(x='', y='Discharge [cfs]',
-         fill=glue::glue("Past\nConditions\n{this_year-30}-{this_year}"),
+         fill=glue::glue("Past Conditions\n(Percentiles)\n{this_year-30}-{this_year}"),
          title=glue::glue("USGS Gauge {STAID} (", max(out$date) %>% 
                             as.Date(., format = '%m-%d-%Y') %>%
                             as.character(), ")\n{STANAME}")) +
