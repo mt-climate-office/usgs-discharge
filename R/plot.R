@@ -111,7 +111,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
                             format(., format = '%m-%d-%Y') %>%
                             as.character(), ")\n{STANAME}")) +
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", hjust = 0.5)) +
-    ggplot2::scale_y_log10()
+    ggplot2::scale_y_log10(labels = label_comma()) 
 
   if ("out_dir" %in% names(other_args)) {
     out_dir = other_args[['out_dir']]
