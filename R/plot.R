@@ -87,7 +87,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
     ggplot2::geom_ribbon(
       data = ribbons,
       mapping = ggplot2::aes(x=date, ymin=ymin, ymax=ymax, fill=name),
-      alpha = 0.5
+      alpha = 0.7
     ) +
     ggplot2::geom_line(
       data = out,
