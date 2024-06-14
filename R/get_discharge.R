@@ -20,6 +20,8 @@ get_discharge <- function(STAID) {
     STAID, code="00060", sdate = start, edate = end
   ))
 
+
+
   if (nrow(dat) == 0) {
     return(NA)
   }

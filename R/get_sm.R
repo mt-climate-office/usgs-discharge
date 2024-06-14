@@ -66,7 +66,7 @@ parse_data_json <- function(x) {
     dplyr::cross_join(meta)
 }
 
-get_station_data <- function(station_triplet, start_date) {
+get_station_data <- function(station_triplet, start_date, ...) {
 
   response <- httr::GET(
     url = file.path(API_URL, "data"),
@@ -97,10 +97,11 @@ get_station_data <- function(station_triplet, start_date) {
   }
 }
 
-filter_start = lubridate::floor_date(
-  lubridate::today() - lubridate::years(30),
-  unit = "years"
+filter_start =
+  lubridate::today() - lubridate::years(30) - lubridate::days(30)
+
+stations <- get_stations(roi = roi,start_date = filter_start, type="sm")
+future::plan(future::multisession, workers = future::availableCores() -1)
+dat <- furrr::future_pmap(
+  stations, get_station_data, start_date = filter_start
 )
-stations <- get_station_list(roi, filter_start)
-
-
