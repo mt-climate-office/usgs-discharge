@@ -31,3 +31,19 @@ get_gauges <- function(clip_shp=NULL) {
 
   return(shp)
 }
+
+# url = "https://waterservices.usgs.gov/nwis/site/?format=rdb&stateCd=mt&siteOutput=expanded&siteStatus=all"
+# read_rdb <- function(url) {
+#
+#   readr::read_tsv(
+#     url,
+#     comment = "#"
+#   ) |>
+#     dplyr::filter(
+#       dplyr::row_number() > 1,
+#       agency_cd == "USGS"
+#     ) |>
+#     dplyr::select(
+#       site_no, station_nm, dec_lat_va, dec_long_va, construction_dt, inventory_dt
+#     ) |> dplyr::filter(!is.na(inventory_dt))
+# }
