@@ -18,6 +18,7 @@ Imports:
     leaflet,
     lubridate,
     purrr,
+    scales,
     sf,
     tibble,
     tidyr,

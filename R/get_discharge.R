@@ -14,11 +14,13 @@ get_discharge <- function(STAID) {
   month <- lubridate::month(end)
   day <- lubridate::day(end)
 
-  start <- end - lubridate::years(31)
+  start <- end - lubridate::years(21)
 
   dat <- suppressWarnings(waterData::importDVs(
     STAID, code="00060", sdate = start, edate = end
   ))
+
+
 
   if (nrow(dat) == 0) {
     return(NA)
@@ -26,7 +28,8 @@ get_discharge <- function(STAID) {
 
   dat |>
     dplyr::select(date=dates, val) |>
-    tibble::tibble()
+    tibble::tibble() |>
+    dplyr::filter(!is.na(val))
 }
 
 
@@ -51,7 +54,5 @@ get_discharge_shp <- function(stations) {
   stations |>
     dplyr::mutate(data = furrr::future_pmap(list(STAID), get_discharge), seed=NULL) |>
     dplyr::filter(!is.na(data)) |>
-    dplyr::filter(purrr::map_lgl(data, ~ nrow(.x) > 11000))
+    dplyr::filter(purrr::map_lgl(data, ~ nrow(.x) > 7300))
 }
-
-
