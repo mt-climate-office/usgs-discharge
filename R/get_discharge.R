@@ -16,11 +16,17 @@ get_discharge <- function(STAID) {
 
   start <- end - lubridate::years(21)
 
-  dat <- suppressWarnings(waterData::importDVs(
-    STAID, code="00060", sdate = start, edate = end
-  ))
 
-
+  dat <- tryCatch(
+    {
+      suppressWarnings(waterData::importDVs(
+        STAID, code = "00060", sdate = start, edate = end
+      ))
+    },
+    error = function(e) {
+      tibble::tibble()
+    }
+  )
 
   if (nrow(dat) == 0) {
     return(NA)
@@ -55,4 +61,5 @@ get_discharge_shp <- function(stations) {
     dplyr::mutate(data = furrr::future_pmap(list(STAID), get_discharge), seed=NULL) |>
     dplyr::filter(!is.na(data)) |>
     dplyr::filter(purrr::map_lgl(data, ~ nrow(.x) > 7300))
+
 }
