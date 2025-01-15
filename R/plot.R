@@ -83,6 +83,14 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
 
   other_args = list(...)
 
+  title_date <- ifelse(
+    nrow(out) == 0,
+    "No Current Data",
+    max(out$date) |>
+      format(format = '%m-%d-%Y') |>
+      as.character()
+  )
+
   plt <- ggplot2::ggplot() +
     ggplot2::geom_ribbon(
       data = ribbons,
@@ -107,9 +115,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
     ggplot2::theme_bw(base_size = 12) +
     ggplot2::labs(x='', y='Discharge [cfs]',
          fill=glue::glue("Past Conditions\n(Percentiles)\n{this_year-30}-{this_year}"),
-         title=glue::glue("USGS Gauge {STAID} (", max(out$date) |>
-                            format(format = '%m-%d-%Y') |>
-                            as.character(), ")\n{STANAME}")) +
+         title=glue::glue("USGS Gauge {STAID} (", title_date, ")\n{STANAME}")) +
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", hjust = 0.5)) +
     ggplot2::scale_y_log10(labels = scales::comma)
 
