@@ -14,7 +14,7 @@ get_discharge <- function(STAID) {
   month <- lubridate::month(end)
   day <- lubridate::day(end)
 
-  start <- end - lubridate::years(21)
+  start <- end - lubridate::years(31)
 
 
   dat <- tryCatch(
@@ -33,9 +33,8 @@ get_discharge <- function(STAID) {
   }
 
   dat |>
-    dplyr::select(date=dates, val) |>
-    tibble::tibble() |>
-    dplyr::filter(!is.na(val))
+    dplyr::select(date=dates, val, qualcode) |>
+    tibble::tibble()
 }
 
 

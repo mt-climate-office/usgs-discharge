@@ -40,7 +40,7 @@ make_quantile_df <- function(vals, probs) {
 #' @export
 #'
 #' @examples
-#' discharge <-  get_discharge("05014500")
+#' discharge <-  get_discharge("06077200")
 #' make_climatology_plot(
 #'   discharge,
 #'   "Swiftcurrent Creek at Many Glacier MT",
@@ -67,7 +67,8 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
   this_year = lubridate::today() |> lubridate::year()
 
   ribbons <- data |>
-    dplyr::group_by(date = lubridate::yday(date)) |>
+    dplyr::filter(!is.na(val)) %>%
+    dplyr::group_by(date = lubridate::yday(lubridate::as_date(date))) |>
     dplyr::summarise(
       ribbons = list(make_quantile_df(
         val, c(0.00, 0.02, 0.05, 0.10, 0.20, 0.30, 0.70, 0.80, 0.90, 0.95, 0.98, 1.00)
@@ -81,15 +82,22 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
   out <- data |>
     dplyr::filter(lubridate::year(date) == this_year)
 
+  most_recent <- tail(out, 1)
+
+  frozen <- ifelse(most_recent$qualcode == "Ice", "Gauge Frozen", NA)
   other_args = list(...)
 
-  title_date <- ifelse(
-    nrow(out) == 0,
-    "No Current Data",
-    max(out$date) |>
-      format(format = '%m-%d-%Y') |>
-      as.character()
-  )
+  if (!is.na(frozen)) {
+    title_date <- frozen
+  } else {
+    title_date <- ifelse(
+      nrow(out) == 0,
+      "No Current Data",
+      max(out$date) |>
+        format(format = '%m-%d-%Y') |>
+        as.character()
+    )
+  }
 
   plt <- ggplot2::ggplot() +
     ggplot2::geom_ribbon(
