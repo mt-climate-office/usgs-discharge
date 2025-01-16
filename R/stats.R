@@ -1,17 +1,32 @@
 calc_range_ntile <- function(data, n_days) {
+  required_obs <- ceiling(n_days*.70)
   max_date = max(data$date)
   previous_dates = max_date - 0:(n_days - 1)
-  purrr::map(0:29, \(x) {
+
+  tmp <- purrr::map(0:29, \(x) {
     date_filter <- previous_dates - lubridate::years(x)
-    data <- data |>
+    out <- data |>
       dplyr::filter(date %in% date_filter)
 
+    val <- ifelse(
+      nrow(out) < required_obs,
+      NA,
+      mean(out$val, na.rm = TRUE)
+    )
+
     tibble::tibble(
-        val = mean(data$val, na.rm = TRUE),
+        val = val,
         date = max(date_filter)
       )
   }) |>
-    dplyr::bind_rows() |>
+    dplyr::bind_rows()
+
+  # If less than ~75% of years are missing, give NA
+  if (nrow(tmp |> dplyr::filter(!is.na(val))) < 20) {
+    return(NA)
+  }
+
+  tmp |>
     dplyr::mutate(
       pct = dplyr::percent_rank(val)
     ) |>
@@ -26,7 +41,7 @@ pal <- leaflet::colorBin(
   ),
   domain = 0:100,
   bins = c(0, 2, 5, 10, 20, 30, 70, 80, 90, 95, 98, 100),
-  na.color = "#000000"
+  na.color = "grey50"
 )
 
 

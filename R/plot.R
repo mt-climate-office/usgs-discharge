@@ -84,7 +84,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
 
   most_recent <- tail(out, 1)
 
-  frozen <- ifelse(most_recent$qualcode == "Ice", "Gauge Frozen", NA)
+  frozen <- ifelse(nrow(most_recent) == 1 && most_recent$qualcode == "Ice", "Gauge Frozen", NA)
   other_args = list(...)
 
   if (!is.na(frozen)) {
