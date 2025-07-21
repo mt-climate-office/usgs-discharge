@@ -67,7 +67,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
   this_year = lubridate::today() |> lubridate::year()
 
   ribbons <- data |>
-    dplyr::filter(!is.na(val)) %>%
+    dplyr::filter(!is.na(val)) |>
     dplyr::group_by(date = lubridate::yday(lubridate::as_date(date))) |>
     dplyr::summarise(
       ribbons = list(make_quantile_df(
@@ -82,7 +82,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
   out <- data |>
     dplyr::filter(lubridate::year(date) == this_year)
 
-  most_recent <- tail(out, 1)
+  most_recent <- utils::tail(out, 1)
 
   frozen <- ifelse(nrow(most_recent) == 1 && most_recent$qualcode == "Ice", "Gauge Frozen", NA)
   other_args = list(...)

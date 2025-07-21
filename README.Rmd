@@ -53,7 +53,7 @@ future::plan(future::multisession, workers = future::availableCores() -1)
 stations <- get_gauges(clip_shp = usgs.discharge::domain)
 
 # only use 5 stations for this example.
-stations <- head(stations, 5)
+stations <- stations |> dplyr::filter(STAID == "06120500")
 
 # You can ignore the warning this spits out.
 # We only get 3 stations as a result, because this function filters out stations
@@ -69,4 +69,3 @@ discharge_shp <- calc_discharge_anomalies(discharge)
 
 print(discharge_shp)
 ```
-

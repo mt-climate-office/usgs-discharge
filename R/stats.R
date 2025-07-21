@@ -3,7 +3,7 @@ calc_range_ntile <- function(data, n_days) {
   max_date = max(data$date)
   previous_dates = max_date - 0:(n_days - 1)
 
-  tmp <- purrr::map(0:29, \(x) {
+  tmp <- purrr::map(1:30, \(x) {
     date_filter <- previous_dates - lubridate::years(x)
     out <- data |>
       dplyr::filter(date %in% date_filter)

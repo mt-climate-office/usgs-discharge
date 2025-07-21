@@ -25,7 +25,7 @@ Create a plot of current streamflow conditions, with the climatology of the
 last 30 years plotted using the USDM color palette.
 }
 \examples{
-discharge <-  get_discharge("05014500")
+discharge <-  get_discharge("06077200")
 make_climatology_plot(
   discharge,
   "Swiftcurrent Creek at Many Glacier MT",
