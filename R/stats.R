@@ -44,6 +44,9 @@ pal <- leaflet::colorBin(
   na.color = "grey50"
 )
 
+# Gracefully handle errors in calc_range_ntile
+safe_calc_range_ntile <- purrr::possibly(calc_range_ntile, otherwise = NA_real_)
+
 
 #' Calculate current, 7-, 14- and 28- day percentiles of discharge at USGS stations.
 #' Uses `furrr` to process statistics in parallel. By default,
@@ -67,10 +70,10 @@ pal <- leaflet::colorBin(
 calc_discharge_anomalies <- function(discharge) {
   discharge |>
     dplyr::mutate(
-      today = furrr::future_map_dbl(data, calc_range_ntile, n_days=1),
-      `7` = furrr::future_map_dbl(data, calc_range_ntile, n_days=7),
-      `14` = furrr::future_map_dbl(data, calc_range_ntile, n_days=14),
-      `28` = furrr::future_map_dbl(data, calc_range_ntile, n_days=28),
+      today = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=1),
+      `7` = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=7),
+      `14` = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=14),
+      `28` = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=28),
     ) |>
     dplyr::select(-data) |>
     tidyr::pivot_longer(
