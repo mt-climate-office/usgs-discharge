@@ -4,6 +4,7 @@
 # `usgs.discharge`: A simple package for calculating 30-year USGS discharge percentiles.
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 ## Installation
@@ -49,7 +50,7 @@ future::plan(future::multisession, workers = future::availableCores() -1)
 stations <- get_gauges(clip_shp = usgs.discharge::domain)
 
 # only use 5 stations for this example.
-stations <- head(stations, 5)
+stations <- stations |> head(5)
 
 # You can ignore the warning this spits out.
 # We only get 3 stations as a result, because this function filters out stations
@@ -69,24 +70,28 @@ plots[[2]]
 discharge_shp <- calc_discharge_anomalies(discharge)
 
 print(discharge_shp)
-#> Simple feature collection with 12 features and 5 fields
+#> Simple feature collection with 16 features and 5 fields
 #> Geometry type: POINT
 #> Dimension:     XY
-#> Bounding box:  xmin: -113.6567 ymin: 48.79883 xmax: -113.3753 ymax: 48.94697
+#> Bounding box:  xmin: -113.6567 ymin: 46.36954 xmax: -96.01708 ymax: 48.94697
 #> Geodetic CRS:  WGS 84
-#> # A tibble: 12 × 6
+#> # A tibble: 16 × 6
 #>    STAID    STANAME                          geometry time  value fillColor
 #>  * <chr>    <chr>                         <POINT [°]> <chr> <dbl> <chr>    
-#>  1 05014500 Swiftcurrent Creek … (-113.6567 48.79883) today 10.3  #FCD27E  
-#>  2 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 7      6.90 #FFAA00  
-#>  3 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 14     6.90 #FFAA00  
-#>  4 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 28    13.8  #FCD27E  
-#>  5 05017500 St. Mary River near… (-113.4207 48.83304) today 31.0  #FFFFFF  
-#>  6 05017500 St. Mary River near… (-113.4207 48.83304) 7     41.4  #FFFFFF  
-#>  7 05017500 St. Mary River near… (-113.4207 48.83304) 14    41.4  #FFFFFF  
-#>  8 05017500 St. Mary River near… (-113.4207 48.83304) 28    82.8  #32E1FA  
-#>  9 05018500 St. Mary Canal at S… (-113.3753 48.94697) today 65.2  #FFFFFF  
-#> 10 05018500 St. Mary Canal at S… (-113.3753 48.94697) 7     82.6  #32E1FA  
-#> 11 05018500 St. Mary Canal at S… (-113.3753 48.94697) 14    91.3  #325CFE  
-#> 12 05018500 St. Mary Canal at S… (-113.3753 48.94697) 28    82.6  #32E1FA
+#>  1 05014500 Swiftcurrent Creek … (-113.6567 48.79883) today 73.3  #82FCF9  
+#>  2 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 7     50    #FFFFFF  
+#>  3 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 14    26.7  #FFFF00  
+#>  4 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 28    13.3  #FCD27E  
+#>  5 05017500 St. Mary River near… (-113.4207 48.83304) today 33.3  #FFFFFF  
+#>  6 05017500 St. Mary River near… (-113.4207 48.83304) 7      6.67 #FFAA00  
+#>  7 05017500 St. Mary River near… (-113.4207 48.83304) 14     6.67 #FFAA00  
+#>  8 05017500 St. Mary River near… (-113.4207 48.83304) 28     3.33 #E60000  
+#>  9 05018500 St. Mary Canal at S… (-113.3753 48.94697) today 96.6  #4030E3  
+#> 10 05018500 St. Mary Canal at S… (-113.3753 48.94697) 7     96.6  #4030E3  
+#> 11 05018500 St. Mary Canal at S… (-113.3753 48.94697) 14    89.7  #32E1FA  
+#> 12 05018500 St. Mary Canal at S… (-113.3753 48.94697) 28    75.9  #82FCF9  
+#> 13 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) today 23.3  #FFFF00  
+#> 14 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 7     23.3  #FFFF00  
+#> 15 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 14    23.3  #FFFF00  
+#> 16 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 28    20    #FFFF00
 ```

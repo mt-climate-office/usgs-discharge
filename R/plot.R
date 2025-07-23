@@ -65,9 +65,19 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
   data = tibble::tibble(data)
 
   this_year = lubridate::today() |> lubridate::year()
+  max_year = (max(data$date) |> lubridate::year()) - 1
+  min_year = max(
+    min(data$date) |> lubridate::year(),
+    max_year - 29
+  )
+
 
   ribbons <- data |>
-    dplyr::filter(!is.na(val)) |>
+    dplyr::filter(
+      !is.na(val),
+      lubridate::year(date) < lubridate::year(lubridate::today()),
+      lubridate::year(date) >= min_year
+    ) |>
     dplyr::group_by(date = lubridate::yday(lubridate::as_date(date))) |>
     dplyr::summarise(
       ribbons = list(make_quantile_df(
@@ -122,7 +132,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
     ) +
     ggplot2::theme_bw(base_size = 12) +
     ggplot2::labs(x='', y='Discharge [cfs]',
-         fill=glue::glue("Past Conditions\n(Percentiles)\n{this_year-30}-{this_year}"),
+         fill=glue::glue("Past Conditions\n(Percentiles)\n{min_year}-{max_year}"),
          title=glue::glue("USGS Gauge {STAID} (", title_date, ")\n{STANAME}")) +
     ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", hjust = 0.5)) +
     ggplot2::scale_y_log10(labels = scales::comma)

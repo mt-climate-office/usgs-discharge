@@ -53,7 +53,7 @@ future::plan(future::multisession, workers = future::availableCores() -1)
 stations <- get_gauges(clip_shp = usgs.discharge::domain)
 
 # only use 5 stations for this example.
-stations <- stations |> dplyr::filter(STAID == "06120500")
+stations <- stations |> head(5)
 
 # You can ignore the warning this spits out.
 # We only get 3 stations as a result, because this function filters out stations

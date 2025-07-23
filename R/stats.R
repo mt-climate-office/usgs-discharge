@@ -3,7 +3,7 @@ calc_range_ntile <- function(data, n_days) {
   max_date = max(data$date)
   previous_dates = max_date - 0:(n_days - 1)
 
-  tmp <- purrr::map(1:30, \(x) {
+  tmp <- purrr::map(0:30, \(x) {
     date_filter <- previous_dates - lubridate::years(x)
     out <- data |>
       dplyr::filter(date %in% date_filter)
@@ -26,12 +26,17 @@ calc_range_ntile <- function(data, n_days) {
     return(NA)
   }
 
-  tmp |>
-    dplyr::mutate(
-      pct = dplyr::percent_rank(val)
-    ) |>
+  # Don't use this year in calculation
+  the_ecdf <- dplyr::filter(tmp, date != max_date) |>
+    dplyr::pull(val) |>
+    stats::ecdf()
+
+  cur_val <- tmp |>
+    # pull this year's value
     dplyr::filter(date == max_date) |>
-    dplyr::pull(pct) * 100
+    dplyr::pull(val)
+
+  return(the_ecdf(cur_val) * 100)
 }
 
 pal <- leaflet::colorBin(
