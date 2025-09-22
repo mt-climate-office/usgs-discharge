@@ -3,7 +3,7 @@ calc_range_ntile <- function(data, n_days) {
   max_date = max(data$date)
   previous_dates = max_date - 0:(n_days - 1)
 
-  tmp <- purrr::map(1:30, \(x) {
+  tmp <- purrr::map(0:30, \(x) {
     date_filter <- previous_dates - lubridate::years(x)
     out <- data |>
       dplyr::filter(date %in% date_filter)
@@ -26,12 +26,17 @@ calc_range_ntile <- function(data, n_days) {
     return(NA)
   }
 
-  tmp |>
-    dplyr::mutate(
-      pct = dplyr::percent_rank(val)
-    ) |>
+  # Don't use this year in calculation
+  the_ecdf <- dplyr::filter(tmp, date != max_date) |>
+    dplyr::pull(val) |>
+    stats::ecdf()
+
+  cur_val <- tmp |>
+    # pull this year's value
     dplyr::filter(date == max_date) |>
-    dplyr::pull(pct) * 100
+    dplyr::pull(val)
+
+  return(the_ecdf(cur_val) * 100)
 }
 
 pal <- leaflet::colorBin(
@@ -43,6 +48,9 @@ pal <- leaflet::colorBin(
   bins = c(0, 2, 5, 10, 20, 30, 70, 80, 90, 95, 98, 100),
   na.color = "#7f7f7f"
 )
+
+# Gracefully handle errors in calc_range_ntile
+safe_calc_range_ntile <- purrr::possibly(calc_range_ntile, otherwise = NA_real_)
 
 
 #' Calculate current, 7-, 14- and 28- day percentiles of discharge at USGS stations.
@@ -67,10 +75,10 @@ pal <- leaflet::colorBin(
 calc_discharge_anomalies <- function(discharge) {
   discharge |>
     dplyr::mutate(
-      today = furrr::future_map_dbl(data, calc_range_ntile, n_days=1),
-      `7` = furrr::future_map_dbl(data, calc_range_ntile, n_days=7),
-      `14` = furrr::future_map_dbl(data, calc_range_ntile, n_days=14),
-      `28` = furrr::future_map_dbl(data, calc_range_ntile, n_days=28),
+      today = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=1),
+      `7` = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=7),
+      `14` = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=14),
+      `28` = furrr::future_map_dbl(data, safe_calc_range_ntile, n_days=28),
     ) |>
     dplyr::select(-data) |>
     tidyr::pivot_longer(
