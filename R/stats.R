@@ -41,7 +41,7 @@ pal <- leaflet::colorBin(
   ),
   domain = 0:100,
   bins = c(0, 2, 5, 10, 20, 30, 70, 80, 90, 95, 98, 100),
-  na.color = "grey50"
+  na.color = "#7f7f7f"
 )
 
 
