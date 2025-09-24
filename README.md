@@ -78,20 +78,20 @@ print(discharge_shp)
 #> # A tibble: 16 × 6
 #>    STAID    STANAME                          geometry time  value fillColor
 #>  * <chr>    <chr>                         <POINT [°]> <chr> <dbl> <chr>    
-#>  1 05014500 Swiftcurrent Creek … (-113.6567 48.79883) today 73.3  #82FCF9  
-#>  2 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 7     50    #FFFFFF  
-#>  3 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 14    26.7  #FFFF00  
-#>  4 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 28    13.3  #FCD27E  
-#>  5 05017500 St. Mary River near… (-113.4207 48.83304) today 33.3  #FFFFFF  
-#>  6 05017500 St. Mary River near… (-113.4207 48.83304) 7      6.67 #FFAA00  
-#>  7 05017500 St. Mary River near… (-113.4207 48.83304) 14     6.67 #FFAA00  
-#>  8 05017500 St. Mary River near… (-113.4207 48.83304) 28     3.33 #E60000  
+#>  1 05014500 Swiftcurrent Creek … (-113.6567 48.79883) today  6.67 #FFAA00  
+#>  2 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 7     13.3  #FCD27E  
+#>  3 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 14    16.7  #FCD27E  
+#>  4 05014500 Swiftcurrent Creek … (-113.6567 48.79883) 28     3.33 #E60000  
+#>  5 05017500 St. Mary River near… (-113.4207 48.83304) today 43.3  #FFFFFF  
+#>  6 05017500 St. Mary River near… (-113.4207 48.83304) 7     13.3  #FCD27E  
+#>  7 05017500 St. Mary River near… (-113.4207 48.83304) 14    16.7  #FCD27E  
+#>  8 05017500 St. Mary River near… (-113.4207 48.83304) 28    16.7  #FCD27E  
 #>  9 05018500 St. Mary Canal at S… (-113.3753 48.94697) today 96.6  #4030E3  
 #> 10 05018500 St. Mary Canal at S… (-113.3753 48.94697) 7     96.6  #4030E3  
 #> 11 05018500 St. Mary Canal at S… (-113.3753 48.94697) 14    89.7  #32E1FA  
 #> 12 05018500 St. Mary Canal at S… (-113.3753 48.94697) 28    75.9  #82FCF9  
-#> 13 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) today 23.3  #FFFF00  
-#> 14 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 7     23.3  #FFFF00  
-#> 15 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 14    23.3  #FFFF00  
-#> 16 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 28    20    #FFFF00
+#> 13 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) today 36.7  #FFFFFF  
+#> 14 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 7     33.3  #FFFFFF  
+#> 15 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 14    30    #FFFFFF  
+#> 16 05030500 OTTER TAIL RIVER NE… (-96.01708 46.36954) 28    33.3  #FFFFFF
 ```

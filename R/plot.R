@@ -95,6 +95,7 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
   most_recent <- utils::tail(out, 1)
 
   frozen <- ifelse(nrow(most_recent) == 1 && most_recent$qualcode == "Ice", "Gauge Frozen", NA)
+  missing_lots <- nrow(dplyr::filter(data, is.na(val)))/nrow(data) < 0.7
   other_args = list(...)
 
   if (!is.na(frozen)) {
@@ -107,6 +108,12 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
         format(format = '%m-%d-%Y') |>
         as.character()
     )
+  }
+
+  if (missing_lots) {
+    legend_title <- glue::glue("Past Conditions<br>(Percentiles)<br>{min_year}-{max_year}<br>**Missing { round(30* nrow(dplyr::filter(data, is.na(val)))/nrow(data))} Years of Data**")
+  } else {
+    legend_title <- glue::glue("Past Conditions<br>(Percentiles)<br>{min_year}-{max_year}")
   }
 
   plt <- ggplot2::ggplot() +
@@ -132,9 +139,12 @@ make_climatology_plot <- function(data, STANAME, STAID, ...) {
     ) +
     ggplot2::theme_bw(base_size = 12) +
     ggplot2::labs(x='', y='Discharge [cfs]',
-         fill=glue::glue("Past Conditions\n(Percentiles)\n{min_year}-{max_year}"),
+         fill=legend_title,
          title=glue::glue("USGS Gauge {STAID} (", title_date, ")\n{STANAME}")) +
-    ggplot2::theme(plot.title = ggplot2::element_text(face = "bold", hjust = 0.5)) +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(face = "bold", hjust = 0.5),
+      legend.title = ggtext::element_markdown()
+    ) +
     ggplot2::scale_y_log10(labels = scales::comma)
 
   if ("out_dir" %in% names(other_args)) {
